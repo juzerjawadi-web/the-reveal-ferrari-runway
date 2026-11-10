@@ -14,7 +14,7 @@
   <b>A bespoke, high-performance web experience fusing a 20-second hardware-accelerated video-scrub hero with an interactive 3D circular runway carousel, real-time hotspot part inspection, and a reactive atelier configuration bag.</b>
 </p>
 
-[**🌐 Explore Live Deployment**](https://ferrari-runway.vercel.app) • [**Report Bug**](https://github.com/juzerjawadi-web/the-reveal-ferrari-runway/issues) • [**Request Feature**](https://github.com/juzerjawadi-web/the-reveal-ferrari-runway/issues)
+[**🌐 Explore Live Deployment**](https://ferrari-reveal-runway.vercel.app) • [**Report Bug**](https://github.com/juzerjawadi-web/the-reveal-ferrari-runway/issues) • [**Request Feature**](https://github.com/juzerjawadi-web/the-reveal-ferrari-runway/issues)
 
 </div>
 
