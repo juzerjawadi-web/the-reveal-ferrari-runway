@@ -1,0 +1,10 @@
+{
+  "name": "ferrari-cinematic-scroll-hero",
+  "version": "1.0.0",
+  "private": true,
+  "description": "20-second cinematic scroll-controlled landing hero",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs"
+  }
+}

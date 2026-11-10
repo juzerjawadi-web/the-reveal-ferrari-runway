@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<meta name="description" content="A cinematic, scroll-driven hypercar reveal, from ignition to the invisible precision of paint protection film.">
+<title>THE REVEAL — Cinematic Scroll Experience</title>
+<link rel="stylesheet" href="assets/runway.css">
+<style>
+:root { --bg:#050505; --paper:#f5f2ed; --red:#ea3027; --soft:#aaa9a7; --edge:clamp(22px,4.8vw,84px); }
+* {box-sizing:border-box}
+html {scroll-behavior:auto; background:var(--bg)}
+html.lenis, html.lenis body {height:auto}
+.lenis.lenis-smooth {scroll-behavior:auto !important}
+.lenis.lenis-smooth [data-lenis-prevent] {overscroll-behavior:contain}
+.lenis.lenis-stopped {overflow:hidden}
+.lenis.lenis-smooth iframe {pointer-events:none}
+body {margin:0; background:var(--bg); color:var(--paper); font-family:Arial,Helvetica,sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased}
+button {font:inherit} button:focus-visible, a:focus-visible {outline:2px solid var(--paper);outline-offset:5px}
+::selection{background:var(--red);color:#fff}
+#scrollExperience {height:1100vh; position:relative; background:#050505}
+.stage {height:100svh; min-height:540px; position:sticky; top:0; overflow:hidden; background:#070707; isolation:isolate}
+.film {position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; background:#080808; filter:contrast(1.02) saturate(1.04); z-index:0; will-change:transform; transform:translateZ(0); backface-visibility:hidden}
+.film::poster {object-fit:cover}
+.shade {position:absolute; inset:0; pointer-events:none; z-index:1; background:linear-gradient(90deg,rgba(0,0,0,.80) 0%,rgba(0,0,0,.48) 29%,rgba(0,0,0,.10) 62%,rgba(0,0,0,.06) 100%),linear-gradient(0deg,rgba(0,0,0,.54),transparent 35%,transparent 72%,rgba(0,0,0,.36));mix-blend-mode:normal}
+.texture {position:absolute; inset:0; z-index:2; opacity:.10; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E")}
+.topbar{position:absolute; z-index:10; top:0; left:0; right:0; padding:28px var(--edge); display:flex; justify-content:space-between; align-items:center; gap:20px; border-bottom:1px solid rgba(255,255,255,.15); background:linear-gradient(180deg,rgba(0,0,0,.32),transparent)}
+.brand{display:flex;align-items:center;gap:13px;font-weight:800;font-size:13px;letter-spacing:.20em;color:var(--paper);text-transform:uppercase;white-space:nowrap}
+.brandIcon{width:26px;height:26px;transform:skew(-12deg); border:2px solid var(--red);border-right-width:6px; border-radius:1px;}
+.topline{font-size:10px;letter-spacing:.28em;color:rgba(255,255,255,.68);text-transform:uppercase;text-align:right}
+.topProgress{position:absolute;top:100%;left:0;width:100%;height:2px;background:rgba(255,255,255,.05);overflow:hidden}
+.topProgressFill{height:100%;width:0%;background:var(--red);box-shadow:0 0 16px rgba(236,46,32,.6);will-change:width}
+.sceneArea{position:absolute;z-index:5;left:var(--edge);bottom:clamp(110px,14vh,170px);max-width:min(72vw,930px);pointer-events:none}
+.chapter{position:absolute; bottom:0;left:0; opacity:0; transform:translate3d(0,24px,0); width:min(75vw,940px); visibility:hidden; will-change:opacity,transform}
+.chapter.on{visibility:visible}
+.chapterSmall{display:flex;align-items:center;gap:14px;text-transform:uppercase; font-size:clamp(10px,.9vw,12px);letter-spacing:.32em;color:#e8deda;font-weight:700;margin-bottom:20px}
+.chapterSmall::before{content:"";width:28px;height:2px;background:var(--red);display:block}
+.chapter h1{margin:0; font-size:clamp(46px,7.3vw,132px); font-weight:800; letter-spacing:-.07em;line-height:.94;text-wrap:balance; text-transform:uppercase; text-shadow:0 6px 30px rgba(0,0,0,.34)}
+.chapter h1 span{display:block}
+.chapter h1 em{font-family:Georgia,'Times New Roman',serif;text-transform:none;font-weight:400;font-size:.88em;letter-spacing:-.055em;line-height:1.05;color:#fff;font-style:italic}
+.chapter p{margin:22px 0 0;max-width:440px;font-size:clamp(12px,1.2vw,16px);line-height:1.6;color:rgba(255,255,255,.81);font-weight:400;letter-spacing:.025em}
+.marker{position:absolute;z-index:10;right:var(--edge);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.marker button{border:0;background:transparent;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:6px 0;color:rgba(255,255,255,.47);cursor:pointer;transition:color .18s ease; min-height:24px}
+.marker button:hover,.marker button.active{color:#fff}
+.markerTitle{font-size:9px;letter-spacing:.13em;text-transform:uppercase;opacity:0;transform:translateX(8px);transition:opacity .2s ease,transform .2s ease;max-width:140px;text-align:right}
+.marker button:hover .markerTitle{opacity:1;transform:translateX(0)}
+.markerDot{display:block;width:16px;height:2px;background:rgba(255,255,255,.45);transition:all .25s ease}
+.marker button.active .markerDot{width:30px;background:var(--red);height:3px}
+.bottomBar{position:absolute;z-index:10;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:26px var(--edge) 30px;border-top:1px solid rgba(255,255,255,.15);background:linear-gradient(0deg,rgba(0,0,0,.38),transparent)}
+.counter{color:rgba(255,255,255,.62);font-size:10px;font-weight:700;letter-spacing:.22em;white-space:nowrap}
+.counter b{font-size:14px;color:white;font-weight:700;letter-spacing:0}
+.scrollPrompt{display:flex;align-items:center;gap:12px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.23em;text-transform:uppercase}
+.mouse{width:17px;height:26px;border:1px solid rgba(255,255,255,.7);border-radius:10px;position:relative}
+.mouse::before{content:"";position:absolute;width:2px;height:6px;background:var(--red);left:6px;top:5px;border-radius:2px;animation:scrollwheel 1.75s infinite}
+@keyframes scrollwheel{0%{transform:translateY(0);opacity:1}80%{transform:translateY(9px);opacity:0}100%{opacity:0}}
+.timestamp{font-size:11px;letter-spacing:.12em;color:rgba(255,255,255,.76);font-variant-numeric:tabular-nums}
+.timestamp b{color:white}
+.loading{position:absolute;z-index:15;inset:0;display:flex;align-items:center;justify-content:center;background:#090909;color:#d6d6d6;transition:opacity .7s ease,visibility .7s ease}
+.loading.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loadingInner{text-align:center;text-transform:uppercase;letter-spacing:.3em;font-size:11px}
+.loadingRing{display:block;margin:0 auto 22px;width:34px;height:34px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--red);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SECTION 2: THE REVEAL CONTINUATION */
+.outro{min-height:70vh;background:#060606;display:grid;grid-template-columns:1.15fr 0.85fr;gap:8%;align-items:center;padding:clamp(70px,9vw,130px) var(--edge);border-top:1px solid rgba(255,255,255,.10);position:relative}
+.outroEyebrow{font-size:11px;color:var(--red);text-transform:uppercase;letter-spacing:.35em;font-weight:700}
+.outro h2{font-size:clamp(46px,6vw,96px);letter-spacing:-.065em;line-height:.95;margin:18px 0 0;text-transform:uppercase}
+.outro p{max-width:480px;font-size:clamp(14px,1.25vw,17px);line-height:1.75;color:#aba9a6;margin:22px 0 0}
+.outroActions{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}
+.btnPrimary{background:var(--red);color:#fff;border:1px solid var(--red);padding:16px 28px;cursor:pointer;font-size:10px;letter-spacing:.22em;font-weight:700;text-transform:uppercase;transition:all .2s ease;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+.btnPrimary:hover{background:#ff3b30;border-color:#ff3b30;transform:translateY(-2px);box-shadow:0 10px 30px rgba(234,48,39,.35)}
+.btnOutline{background:none;color:var(--paper);border:1px solid rgba(255,255,255,.35);padding:16px 28px;cursor:pointer;font-size:10px;letter-spacing:.22em;font-weight:700;text-transform:uppercase;transition:all .2s ease;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+.btnOutline:hover{background:#fff;color:#000;border-color:#fff;transform:translateY(-2px)}
+
+/* METRICS STRIP */
+.metricStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);margin-top:54px;width:100%;grid-column:1/-1}
+.metricBox{background:#080808;padding:28px 24px}
+.metricVal{font-size:clamp(30px,3.4vw,52px);font-weight:800;letter-spacing:-.05em;color:#fff;line-height:1}
+.metricVal span{color:var(--red);font-size:.65em;margin-left:2px}
+.metricLbl{font-size:10px;letter-spacing:.20em;text-transform:uppercase;color:#858380;margin-top:10px;font-weight:600}
+
+/* SECTION HEADERS */
+.secHeader{text-align:left;max-width:800px;margin-bottom:46px}
+.secBadge{font-size:10px;letter-spacing:.32em;color:var(--red);text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.secBadge::before{content:"";width:24px;height:2px;background:var(--red);display:inline-block}
+.secTitle{font-size:clamp(34px,4.5vw,70px);font-weight:800;letter-spacing:-.06em;line-height:1.02;text-transform:uppercase;margin:0}
+.secDesc{font-size:clamp(14px,1.2vw,16px);color:#9e9c99;line-height:1.7;margin-top:16px;max-width:540px}
+
+/* FLEET & COMMISSIONS SHOWCASE */
+.fleetSection{padding:clamp(70px,8vw,130px) var(--edge);background:#070707;border-top:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden}
+.fleetTabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;border-bottom:1px solid rgba(255,255,255,.10);padding-bottom:18px}
+.fleetTab{background:none;border:1px solid rgba(255,255,255,.14);color:#888;padding:12px 22px;font-size:10px;letter-spacing:.20em;text-transform:uppercase;cursor:pointer;transition:all .25s ease;font-weight:700}
+.fleetTab:hover{color:#fff;border-color:rgba(255,255,255,.35)}
+.fleetTab.active{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 25px rgba(255,255,255,.15)}
+
+.fleetDisplay{display:grid;grid-template-columns:1.2fr 0.8fr;gap:6%;align-items:center;background:#090909;border:1px solid rgba(255,255,255,.09);padding:clamp(36px,5vw,66px);position:relative;border-radius:2px}
+.fleetDisplay::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 45% 50%,rgba(234,48,39,.09),transparent 70%);pointer-events:none}
+.fleetStage{position:relative;display:flex;align-items:center;justify-content:center;min-height:360px}
+.fleetPedestal{position:absolute;bottom:15px;width:85%;height:45px;background:radial-gradient(ellipse at center,rgba(255,255,255,.18) 0%,rgba(234,48,39,.14) 40%,transparent 70%);transform:rotateX(65deg);filter:blur(8px)}
+.fleetImg{max-width:100%;height:auto;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 25px 40px rgba(0,0,0,.95));transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s ease}
+.fleetInfo{position:relative;z-index:3}
+.fleetCategory{font-size:10px;color:var(--red);letter-spacing:.28em;text-transform:uppercase;font-weight:700}
+.fleetName{font-size:clamp(28px,3vw,44px);letter-spacing:-.05em;line-height:1.05;margin:10px 0 16px;text-transform:uppercase}
+.fleetStory{font-size:14px;line-height:1.75;color:#9b9996;margin-bottom:28px}
+.fleetSpecGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;border-top:1px solid rgba(255,255,255,.10);padding-top:22px;margin-bottom:30px}
+.specItem small{display:block;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#706e6b}
+.specItem strong{font-size:13px;letter-spacing:.05em;color:#fff;margin-top:4px;display:block}
+
+/* BEFORE & AFTER INSPECTION */
+.inspectionSection{padding:clamp(70px,8vw,130px) var(--edge);background:#050505;border-top:1px solid rgba(255,255,255,.08)}
+.compareContainer{position:relative;width:100%;height:clamp(340px,44vw,520px);overflow:hidden;border:1px solid rgba(255,255,255,.14);background:#0a0a0a;user-select:none;touch-action:none;cursor:ew-resize}
+.comparePane{position:absolute;inset:0;width:100%;height:100%;overflow:hidden}
+.paneAfter{position:absolute;inset:0;width:100%;height:100%;background:radial-gradient(circle at 60% 40%,#1a100f 0%,#080808 70%);display:flex;align-items:center;justify-content:center}
+.paneBefore{position:absolute;inset:0;width:50%;height:100%;background:radial-gradient(circle at 40% 40%,#20120f 0%,#090909 70%);overflow:hidden;border-right:2px solid var(--red);box-shadow:0 0 30px rgba(234,48,39,.45)}
+.defectTexture{position:absolute;inset:0;opacity:.7;background-image:radial-gradient(circle at 50% 50%,rgba(255,255,255,.25) 0%,transparent 30%),repeating-radial-gradient(circle at 50% 50%,transparent 0,transparent 14px,rgba(255,255,255,.10) 15px,transparent 16px);pointer-events:none}
+.mirrorTexture{position:absolute;inset:0;opacity:.8;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.35) 0%,rgba(234,48,39,.12) 30%,transparent 65%);pointer-events:none}
+.compareContent{position:relative;text-align:center;padding:20px;z-index:2}
+.compareContent h3{font-size:clamp(24px,3vw,42px);font-weight:800;letter-spacing:-.04em;text-transform:uppercase;margin:0 0 10px}
+.compareContent p{font-size:13px;letter-spacing:.08em;color:rgba(255,255,255,.7);text-transform:uppercase;margin:0}
+.compareLabel{position:absolute;bottom:24px;font-size:10px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;padding:8px 16px;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(8px);z-index:5}
+.labelBefore{left:24px;color:#e8908a;border-color:rgba(234,48,39,.4)}
+.labelAfter{right:24px;color:#fff}
+.compareHandle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#090909;border:2px solid #fff;box-shadow:0 0 25px rgba(0,0,0,.9),0 0 15px rgba(234,48,39,.6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:900;letter-spacing:1px;pointer-events:none;z-index:10}
+
+/* PROTOCOL STEPS */
+.protocolSection{padding:clamp(70px,8vw,130px) var(--edge);background:#070707;border-top:1px solid rgba(255,255,255,.08)}
+.protocolGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:46px}
+.protoCard{background:#090909;border:1px solid rgba(255,255,255,.09);padding:36px 28px;position:relative;transition:all .3s ease;display:flex;flex-direction:column;justify-content:space-between}
+.protoCard:hover{border-color:rgba(255,255,255,.28);transform:translateY(-4px);background:#0d0d0d}
+.protoCard::after{content:"";position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width .3s ease}
+.protoCard:hover::after{width:100%}
+.protoNum{font-size:11px;letter-spacing:.28em;color:var(--red);font-weight:800;margin-bottom:20px}
+.protoTitle{font-size:19px;font-weight:800;letter-spacing:-.04em;text-transform:uppercase;line-height:1.2;margin:0 0 14px}
+.protoText{font-size:13px;line-height:1.7;color:#9b9996;margin:0 0 24px}
+.protoTag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);border-top:1px solid rgba(255,255,255,.08);padding-top:16px;display:block}
+
+/* TIERS / PACKAGES */
+.tiersSection{padding:clamp(70px,8vw,130px) var(--edge);background:#050505;border-top:1px solid rgba(255,255,255,.08)}
+.tiersGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:46px}
+.tierCard{background:#090909;border:1px solid rgba(255,255,255,.09);padding:40px 32px;position:relative;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .3s}
+.tierCard.featured{background:#0c0909;border-color:var(--red);box-shadow:0 20px 50px rgba(234,48,39,.12)}
+.tierBadge{position:absolute;top:20px;right:24px;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--red);font-weight:800}
+.tierName{font-size:24px;font-weight:800;letter-spacing:-.04em;text-transform:uppercase;margin:0 0 8px}
+.tierSubtitle{font-size:11px;color:#858380;letter-spacing:.15em;text-transform:uppercase;margin-bottom:26px}
+.tierList{list-style:none;padding:0;margin:0 0 34px;border-top:1px solid rgba(255,255,255,.09);padding-top:22px}
+.tierList li{font-size:13px;color:#cac7c2;padding:9px 0;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.tierList li::before{content:"✦";color:var(--red);font-size:10px}
+
+/* INQUIRY FORM */
+.inquirySection{padding:clamp(70px,8vw,130px) var(--edge);background:#080808;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:1fr 1.1fr;gap:8%;align-items:start}
+.inquiryForm{background:#0a0a0a;border:1px solid rgba(255,255,255,.12);padding:clamp(30px,4vw,50px);display:flex;flex-direction:column;gap:18px}
+.formRow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.formGroup{display:flex;flex-direction:column;gap:8px}
+.formGroup label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#858380;font-weight:700}
+.formGroup input,.formGroup select,.formGroup textarea{background:#050505;border:1px solid rgba(255,255,255,.18);color:#fff;padding:14px 16px;font-family:inherit;font-size:13px;outline:none;transition:border-color .2s}
+.formGroup input:focus,.formGroup select:focus,.formGroup textarea:focus{border-color:var(--red)}
+.formFeedback{display:none;padding:30px;background:#100606;border:1px solid var(--red);color:#fff;text-align:center}
+
+/* STUDIO FOOTER */
+.studioFooter{padding:clamp(60px,7vw,100px) var(--edge) 32px;background:#030303;border-top:1px solid rgba(255,255,255,.12);color:#888}
+.footerGrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:60px}
+.footerCol h4{font-size:11px;letter-spacing:.25em;color:#fff;text-transform:uppercase;margin:0 0 18px;font-weight:700}
+.footerCol p{font-size:13px;line-height:1.75;color:#858380;margin:0}
+.footerCol ul{list-style:none;padding:0;margin:0}
+.footerCol ul li{margin-bottom:10px}
+.footerCol ul li a{color:#858380;text-decoration:none;font-size:12px;letter-spacing:.05em;transition:color .2s}
+.footerCol ul li a:hover{color:#fff}
+.footerBottomBar{display:flex;justify-content:space-between;align-items:center;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+@media (max-width:760px){
+ .stage{min-height:0;height:100svh} .film{object-position:50% 50%}
+ .shade{background:linear-gradient(0deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.48) 42%,rgba(0,0,0,.08) 72%,rgba(0,0,0,.30) 100%)}
+ .topbar{padding-top:22px;padding-bottom:22px}.topline{font-size:8px;letter-spacing:.15em}.brand{font-size:10px;letter-spacing:.14em}.brandIcon{height:19px;width:19px}
+ .sceneArea{left:var(--edge);bottom:120px;max-width:calc(100vw - 70px)}.chapter{width:calc(100vw - 80px)}
+ .chapter h1{font-size:clamp(42px,9.8vw,75px);line-height:.98;letter-spacing:-.063em}
+ .chapterSmall{font-size:9px;letter-spacing:.2em;margin-bottom:13px}.chapterSmall::before{width:18px}
+ .chapter p{font-size:12px;margin-top:15px;max-width:300px}
+ .marker{right:11px;gap:6px}.markerTitle{display:none}.marker button{padding:4px 0;min-height:20px}.markerDot{width:11px}.marker button.active .markerDot{width:19px}
+ .bottomBar{padding-bottom:22px}.scrollPrompt{font-size:9px;gap:6px}.timestamp{font-size:9px}.counter{font-size:9px}
+ .outro{grid-template-columns:1fr;gap:14px;min-height:66vh}.outro h2{font-size:clamp(48px,11vw,74px)}
+}
+@media (prefers-reduced-motion:reduce){.mouse::before,.loadingRing{animation:none}.marker button,.markerDot,.outro button{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<section id="scrollExperience" aria-label="Scroll to reveal the hypercar film">
+<div class="stage" id="stage">
+<video class="film" id="heroVideo" muted playsinline preload="auto" poster="assets/hero-poster.jpg" aria-label="20-second cinematic film showing showroom illumination, a Ferrari hypercar, paint swirls, PPF application, and finished paintwork">
+<source src="assets/hero-scroll-720p.mp4" type="video/mp4">
+</video>
+<div class="shade" aria-hidden="true"></div><div class="texture" aria-hidden="true"></div>
+<div class="loading" id="loading"><div class="loadingInner"><i class="loadingRing"></i>Preparing the experience</div></div>
+<header class="topbar">
+<div class="brand"><span class="brandIcon" aria-hidden="true"></span>THE REVEAL <span style="font-weight:400;color:#777;letter-spacing:0">/</span> HYPERCAR</div>
+<div class="topline">THE ART OF THE INVISIBLE <span style="color:var(--red)">✦</span> CHAPTER 01—10</div>
+<div class="topProgress"><div class="topProgressFill" id="progressFill"></div></div>
+</header>
+<div class="sceneArea" id="sceneArea" aria-live="off"></div>
+<nav class="marker" id="markers" aria-label="Jump to a cinematic chapter"></nav>
+<div class="bottomBar">
+<div class="counter"><b id="chapterNumber">01</b> / 10 &nbsp;·&nbsp; <span id="chapterLabel">THE BEGINNING</span></div>
+<div class="scrollPrompt"><span class="mouse" aria-hidden="true"></span><span id="scrollHint">SCROLL TO REVEAL</span></div>
+<div class="timestamp"><b id="timecode">00:00</b> / 00:20</div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 2: RUNWAY 3D CAROUSEL (TRY THE LOOK — AUTOMOTIVE BESPOKE EDITION) -->
+<header class="site-header shopify-section-group-header-group">
+  <a href="./" class="brand" aria-label="Runway home">
+    <span class="brandIcon" aria-hidden="true"></span>
+    <span>THE REVEAL / RUNWAY</span>
+  </a>
+  <nav aria-label="Main navigation">
+    <a href="./" aria-current="page">Home</a>
+    <a href="https://nike-makknzjs.myshopify.com/pages/nike-orbit" target="_blank" rel="noopener noreferrer">Nike Orbit</a>
+    <a href="https://nike-makknzjs.myshopify.com/pages/scene-rail" target="_blank" rel="noopener noreferrer">Hand Rail Pro</a>
+    <a href="./" aria-current="page">Runway</a>
+  </nav>
+  <button id="open-bag" aria-label="Open styling bag">
+    <svg width="22" height="24" viewBox="0 0 24 26" fill="none" stroke="currentColor" stroke-width="1.3">
+      <path d="M4 8h16l1 16H3L4 8zM8 8V6a4 4 0 0 1 8 0v2"/>
+    </svg>
+    <span data-cart-count>0</span>
+  </button>
+</header>
+
+<runway-section id="Runway-template--28035983671601__the_runway_wdM8BG"
+  class="rw rw--add-icon rw--popup rw--list has-dividers has-border"
+  data-feel="balanced" data-blur="true" data-mblur="true" data-style="ring"
+  data-mstyle="classic" data-fit="true" data-height-mode="original" data-height-vh="100"
+  data-mheight-mode="custom" data-mheight-vh="109" data-reflect="false"
+  data-autoplay="true" data-speed="5000" data-after-add="stay" data-bundle-code=""
+  data-msg-choose="Pick a size for: [items]"
+  data-msg-error="Couldn’t add to bag. Please try again."
+  data-msg-soldout="Sold out"
+  style="--rw-c-stage:#ffffff;--rw-c-panel:#ffffff;--rw-c-text:#151413;--rw-c-muted:#66625c;--rw-c-accent:#0e0e0e;--rw-c-on-accent:#ffffff;--rw-c-line:#c8c8c8;--rw-card:#DFDFDF;--rw-hf:Helvetica,Arial,sans-serif;--rw-hw:400;--rw-h-d:46px;--rw-h-m:24px;--rw-sub-d:12px;--rw-sub-m:12px;--rw-eyebrow-d:11px;--rw-eyebrow-m:10px;--rw-label-d:10px;--rw-label-m:9px;--rw-chip-d:17px;--rw-chip-m:18px;--rw-ph-d:18px;--rw-ph-m:16px;--rw-pt-size-d:13px;--rw-pt-size-m:12px;--rw-price-d:12px;--rw-price-m:12px;--rw-opt-d:11px;--rw-opt-m:11px;--rw-total-d:16px;--rw-total-m:16px;--rw-thumb-d:92px;--rw-thumb-m:62px;--rw-tag-top:18px;--rw-tag-left:0px;--rw-thumb-radius:0px;--rw-morph:900ms;--rw-bar-r:20px;--rw-panel-w:380px;--rw-panel-pad-d:32px;--rw-radius:0px;--rw-max:none;--rw-speed:5s;--rw-ax:40%;--rw-btn-radius:0px;--rw-pill-radius:30px;--rw-add-radius:20px;">
+
+  <div class="rw__sticky">
+    <div class="rw__grid">
+      <div class="rw__left">
+        <div class="rw__head">
+          <div class="rw__intro">
+            <h2 class="rw__title">Try the Look.</h2>
+            <p class="rw__sub">Six hypercar builds, styled head to toe. Explore the runway, isolate a build, and tap a pin to inspect the piece.</p>
+          </div>
+          <span class="rw__sr" aria-live="polite" aria-atomic="true" data-rw-live></span>
+        </div>
+
+        <div class="rw__stage" data-rw-stage tabindex="0" role="region" aria-roledescription="carousel" aria-label="Try the Look. — use arrow keys or swipe to change look">
+          <div class="rw__actors" data-rw-actors></div>
+          <div class="rw__heroes" data-rw-heroes></div>
+          <span class="rw__sweep" aria-hidden="true"></span>
+          <span class="rw__cursor" data-rw-cursor aria-hidden="true">
+            <span class="rw__cursor-in">
+              <span class="rw__cursor-label rw__cursor-drag">Drag</span>
+              <span class="rw__cursor-label rw__cursor-view">View</span>
+            </span>
+          </span>
+          <span class="rw__walk" aria-hidden="true"><span class="rw__walk-line"></span></span>
+        </div>
+
+        <div class="rw__controls">
+          <button class="rw__icon" data-rw-prev aria-label="Previous look">
+            <svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M25 7H1M7 1L1 7l6 6"/></svg>
+          </button>
+          <div class="rw__ticks"></div>
+          <button class="rw__icon rw__auto is-playing" data-rw-auto aria-pressed="true" aria-label="Autoplay">
+            <svg class="rw__play-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12.5-7.5z"/></svg>
+            <svg class="rw__pause-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 4.5h3.5v15H6.5zM14 4.5h3.5v15H14z"/></svg>
+          </button>
+          <button class="rw__icon" data-rw-next aria-label="Next look">
+            <svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h24M19 1l6 6-6 6"/></svg>
+          </button>
+        </div>
+
+        <div class="rw__lb" data-rw-lb data-word="Build" role="region" aria-label="View look" aria-hidden="true">
+          <div class="rw__lb-stage" data-rw-lb-stage></div>
+          <div class="rw__lb-top">
+            <p class="rw__lb-cap"><span class="rw__lb-kicker" data-rw-lb-kicker></span><span class="rw__lb-name" data-rw-lb-name></span></p>
+            <button class="rw__lb-close" data-rw-zoom-close aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg>
+            </button>
+          </div>
+          <p class="rw__lb-hint">Tap a dot to inspect the piece</p>
+        </div>
+      </div>
+
+      <div class="rw__panel has-rule">
+        <div class="rw__panel-inner">
+          <div class="rw__panel-head">
+            <h3 class="rw__panel-title">In this look</h3>
+            <span class="rw__label" data-rw-pieces>3 pieces</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</runway-section>
+
+<!-- STYLING BAG MODAL DIALOG -->
+<dialog id="bag-dialog" aria-labelledby="bag-title">
+  <div class="bag-heading">
+    <h2 id="bag-title">Your styling bag</h2>
+    <button id="close-bag" aria-label="Close styling bag">×</button>
+  </div>
+  <p class="bag-note">A local outfit & component shortlist. No payment or order is collected here. Submit via atelier inquiry to commission your build.</p>
+  <div id="bag-items"></div>
+  <p id="bag-total"></p>
+  <button id="export-bag">Download outfit shortlist</button>
+</dialog>
+
+<!-- TOAST -->
+<div id="bag-status" role="status" aria-live="polite"></div>
+
+<section class="outro" id="nextSection" aria-label="After the reveal">
+<div>
+  <span class="outroEyebrow">LIGHT REVEALS. PRECISION PRESERVES.</span>
+  <h2>THE FINISH<br>IS EVERYTHING.</h2>
+</div>
+<div>
+  <p>Every line revealed. Every imperfection examined. An almost invisible layer of protection, engineered to preserve what matters. From multi-stage rotary jeweling to clean-room optical PPF encapsulation, our atelier elevates automotive preservation into fine art.</p>
+  <div class="outroActions">
+    <a href="#commissions" class="btnPrimary">Explore Archive ↓</a>
+    <button type="button" id="replay" class="btnOutline">↗ &nbsp; Replay the reveal</button>
+    <a href="#inquiry" class="btnOutline">Commission a Build</a>
+  </div>
+</div>
+<div class="metricStrip">
+  <div class="metricBox">
+    <div class="metricVal">99.8<span>%</span></div>
+    <div class="metricLbl">Optical Purity Index</div>
+  </div>
+  <div class="metricBox">
+    <div class="metricVal">8.5<span>MIL</span></div>
+    <div class="metricLbl">Self-Healing Elastomer</div>
+  </div>
+  <div class="metricBox">
+    <div class="metricVal">0.00<span>MM</span></div>
+    <div class="metricLbl">Blade-To-Paint Contact</div>
+  </div>
+  <div class="metricBox">
+    <div class="metricVal">10<span>YR</span></div>
+    <div class="metricLbl">Global Atelier Warranty</div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 2 PART B: FLEET & COMMISSIONS SHOWCASE -->
+<section class="fleetSection" id="commissions" aria-label="Bespoke Commission Archive">
+  <div class="secHeader">
+    <div class="secBadge">THE COMMISSIONS / PRIVATE ARCHIVE</div>
+    <h2 class="secTitle">BESPOKE EXECUTION<br>ACROSS EVERY CLASS.</h2>
+    <p class="secDesc">Explore recent commissions completed inside our Modena & Mayfair clean-room facilities. Each vehicle receives custom-digitized templates matched to micrometer tolerances.</p>
+  </div>
+  <div class="fleetTabs" id="fleetTabs" role="tablist">
+    <button class="fleetTab active" type="button" data-fleet="0" role="tab" aria-selected="true">01 / Heritage Concours (300 SL)</button>
+    <button class="fleetTab" type="button" data-fleet="1" role="tab" aria-selected="false">02 / Tactical Armour (G 63 AMG)</button>
+    <button class="fleetTab" type="button" data-fleet="2" role="tab" aria-selected="false">03 / Executive Concours (Maybach S-Class)</button>
+  </div>
+  <div class="fleetDisplay" id="fleetDisplay">
+    <div class="fleetStage">
+      <div class="fleetPedestal" aria-hidden="true"></div>
+      <img src="assets/car-300sl-clean.png" id="fleetCarImg" class="fleetImg" alt="1957 Mercedes-Benz 300 SL Roadster">
+    </div>
+    <div class="fleetInfo">
+      <div class="fleetCategory" id="fleetCategory">CLASSIC ICON · CHASSIS 00198</div>
+      <h3 class="fleetName" id="fleetName">1957 MERCEDES-BENZ 300 SL</h3>
+      <p class="fleetStory" id="fleetStory">An irreplaceable automotive sculpture in deep burgundy lacquer. Hand-templated 8.0 mil optical clear coat encapsulation without factory trim removal or disturbance of authentic period patina.</p>
+      <div class="fleetSpecGrid" id="fleetSpecs">
+        <div class="specItem"><small>Formulation</small><strong>8.0 Mil Optical TPU</strong></div>
+        <div class="specItem"><small>Edge Method</small><strong>100% Hand-Wrapped</strong></div>
+        <div class="specItem"><small>Disassembly</small><strong>Zero Trim Removal</strong></div>
+        <div class="specItem"><small>Warranty</small><strong>Concours Preservation</strong></div>
+      </div>
+      <a href="#inquiry" class="btnPrimary">Commission Similar Build →</a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 PART C: INTERACTIVE BEFORE & AFTER INSPECTION -->
+<section class="inspectionSection" id="inspection" aria-label="Interactive Paint Inspection">
+  <div class="secHeader">
+    <div class="secBadge">THE SURFACE / OPTICAL PURITY</div>
+    <h2 class="secTitle">DEFECT CORRECTION<br>VS INVISIBLE SHIELD.</h2>
+    <p class="secDesc">Drag the interactive inspection divider below to examine paint under 2000-lumen specular light before and after multi-stage rotary refinement and PPF fusion.</p>
+  </div>
+  <div class="compareContainer" id="compareContainer" aria-label="Drag slider to compare before and after surfaces">
+    <div class="comparePane paneAfter">
+      <div class="mirrorTexture" aria-hidden="true"></div>
+      <div class="compareContent">
+        <h3>AFTER / ATELIER SHIELD</h3>
+        <p>Self-Healing Optical TPU · Dual-Stage Ceramic · 100% Depth</p>
+      </div>
+      <div class="compareLabel labelAfter">ATELIER SPEC: FLAWLESS REFLECTION</div>
+    </div>
+    <div class="comparePane paneBefore" id="paneBefore">
+      <div class="defectTexture" aria-hidden="true"></div>
+      <div class="compareContent">
+        <h3>BEFORE / UNPROTECTED</h3>
+        <p>Factory Orange Peel · Micro-Swirls · Road Etchings</p>
+      </div>
+      <div class="compareLabel labelBefore">FACTORY SURFACE: SWIRLS & MARRING</div>
+    </div>
+    <div class="compareHandle" id="compareHandle" aria-hidden="true"><span>⇄</span></div>
+  </div>
+</section>
+
+<!-- SECTION 2 PART D: THE 4-STAGE PRECISION PROTOCOL -->
+<section class="protocolSection" id="protocol" aria-label="The Atelier Protocol">
+  <div class="secHeader">
+    <div class="secBadge">THE ATELIER PROTOCOL</div>
+    <h2 class="secTitle">4 STAGES OF<br>OBSESSIVE PRECISION.</h2>
+    <p class="secDesc">Our proprietary protocol ensures that no blade touches vehicle metal and every edge is meticulously wrapped around panel boundaries.</p>
+  </div>
+  <div class="protocolGrid">
+    <div class="protoCard">
+      <div>
+        <div class="protoNum">PHASE 01 / PURIFICATION</div>
+        <h3 class="protoTitle">SPECTRAL SURFACE CORRECTION</h3>
+        <p class="protoText">Multi-stage fallout bath, non-abrasive clay bar, and single-micron jewel rotary correction eliminating factory orange peel and wash scratches.</p>
+      </div>
+      <span class="protoTag">MEASUREMENT: ELCOMETER 456 ULTRASONIC GAUGE</span>
+    </div>
+    <div class="protoCard">
+      <div>
+        <div class="protoNum">PHASE 02 / DIGITIZATION</div>
+        <h3 class="protoTitle">CAD LASER TEMPLATE PLOTTING</h3>
+        <p class="protoText">Every panel is plotted in-house with extended margins for seamless edge tucking. Zero knives, scalpels, or blades touch painted factory surfaces.</p>
+      </div>
+      <span class="protoTag">SOFTWARE: 3D SCANNER ATELIER SUITE</span>
+    </div>
+    <div class="protoCard">
+      <div>
+        <div class="protoNum">PHASE 03 / INSTALLATION</div>
+        <h3 class="protoTitle">CLASS-1000 CLEAN ROOM APPLICATION</h3>
+        <p class="protoText">Installed in our positive-pressure, HEPA-filtered clean room. Optical slip solution ensures zero airborne dust contamination underneath the film.</p>
+      </div>
+      <span class="protoTag">ENVIRONMENT: POSITIVE PRESSURE HEPA H14</span>
+    </div>
+    <div class="protoCard">
+      <div>
+        <div class="protoNum">PHASE 04 / ENCAPSULATION</div>
+        <h3 class="protoTitle">INFRARED ANNEALING & CERAMIC BOND</h3>
+        <p class="protoText">Short-wave infrared lamps lock thermoplastic memory at 90°C before applying molecular SiO2 ceramic coating for permanent hydrophobic repellency.</p>
+      </div>
+      <span class="protoTag">CURING: SHORTWAVE INFRARED RADIANT LAMPS</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 PART E: PROTECTION TIERS -->
+<section class="tiersSection" id="tiers" aria-label="Protection Packages">
+  <div class="secHeader">
+    <div class="secBadge">PROTECTION TIERS / PACKAGES</div>
+    <h2 class="secTitle">CHOOSE YOUR LEVEL<br>OF PROTECTION.</h2>
+    <p class="secDesc">Select a standardized commission package or consult with our master technicians for bespoke tailored execution.</p>
+  </div>
+  <div class="tiersGrid">
+    <div class="tierCard">
+      <div>
+        <h3 class="tierName">FRONT TRACK PACK</h3>
+        <div class="tierSubtitle">HIGH-VELOCITY DEFENSE</div>
+        <ul class="tierList">
+          <li>Full Front Bumper & Carbon Splitter</li>
+          <li>Entire Bonnet & Front Wings</li>
+          <li>Headlight & DRL Optical Lenses</li>
+          <li>Mirror Housings & A-Pillars</li>
+          <li>5-Year Manufacturer Warranty</li>
+        </ul>
+      </div>
+      <a href="#inquiry" class="btnOutline" style="justify-content:center">Select Front Track</a>
+    </div>
+    <div class="tierCard featured">
+      <div class="tierBadge">MOST COMMISSIONED</div>
+      <div>
+        <h3 class="tierName">SIGNATURE FULL BODY</h3>
+        <div class="tierSubtitle">COMPLETE ENCAPSULATION</div>
+        <ul class="tierList">
+          <li>100% Exterior Painted Body Panels</li>
+          <li>Full Edge-Tucking into Wheel Arches</li>
+          <li>Door Shuts, Sills & Rocker Panels</li>
+          <li>Rear Diffuser & Engine Bay Carbon</li>
+          <li>10-Year Global Self-Healing Warranty</li>
+        </ul>
+      </div>
+      <a href="#inquiry" class="btnPrimary" style="justify-content:center">Commission Full Body</a>
+    </div>
+    <div class="tierCard">
+      <div>
+        <h3 class="tierName">CONCOURS ATELIER</h3>
+        <div class="tierSubtitle">BESPOKE PRIVATE GARAGE</div>
+        <ul class="tierList">
+          <li>Signature Full Body PPF (Gloss / Stealth)</li>
+          <li>Multi-Layered Ceramic Body Coating</li>
+          <li>Wheels-Off Caliper & Barrel Ceramic</li>
+          <li>Interior Leather & Alcantara Shield</li>
+          <li>Enclosed Transport & Lifetime Concierge</li>
+        </ul>
+      </div>
+      <a href="#inquiry" class="btnOutline" style="justify-content:center">Inquire Bespoke</a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 PART F: INQUIRY STUDIO -->
+<section class="inquirySection" id="inquiry" aria-label="Book Commission Consultation">
+  <div>
+    <div class="secBadge">COMMISSION AN ATELIER BUILD</div>
+    <h2 class="secTitle">SECURE YOUR<br>PRODUCTION SLOT.</h2>
+    <p class="secDesc">Our ateliers accept a limited allocation of commissions per month to guarantee uncompromising craftsmanship. Enclosed white-glove transport available internationally.</p>
+    <div style="margin-top:40px;border-top:1px solid rgba(255,255,255,.08);padding-top:28px">
+      <div style="font-size:10px;letter-spacing:.25em;color:var(--red);font-weight:700;text-transform:uppercase;margin-bottom:8px">DIRECT CONCIERGE DESK</div>
+      <div style="font-size:18px;font-weight:700;color:#fff;letter-spacing:.02em">+39 059 89400 · MODENA ATELIER</div>
+      <div style="font-size:13px;color:#858380;margin-top:8px">Enclosed carrier dispatch available across Europe, North America & UAE.</div>
+    </div>
+  </div>
+  <div>
+    <form class="inquiryForm" id="inquiryForm">
+      <div class="formRow">
+        <div class="formGroup">
+          <label for="carMakeModel">Vehicle Make & Model</label>
+          <input type="text" id="carMakeModel" placeholder="e.g. Ferrari SF90 / 812" required>
+        </div>
+        <div class="formGroup">
+          <label for="carYear">Model Year</label>
+          <input type="text" id="carYear" placeholder="e.g. 2026" required>
+        </div>
+      </div>
+      <div class="formRow">
+        <div class="formGroup">
+          <label for="serviceTier">Desired Protection</label>
+          <select id="serviceTier" required>
+            <option value="Signature Full Body PPF">Signature Full Body PPF (Gloss)</option>
+            <option value="Stealth Matte Conversion">Stealth Satin / Matte Conversion</option>
+            <option value="Front Track Pack">Front Track Pack</option>
+            <option value="Concours Atelier Bespoke">Concours Atelier Bespoke</option>
+          </select>
+        </div>
+        <div class="formGroup">
+          <label for="studioLocation">Preferred Atelier</label>
+          <select id="studioLocation" required>
+            <option value="Modena, Italy">Modena Atelier (HQ)</option>
+            <option value="London Mayfair">London Mayfair Studio</option>
+            <option value="Dubai DIFC">Dubai DIFC Vault</option>
+            <option value="Los Angeles">Beverly Hills Atelier</option>
+          </select>
+        </div>
+      </div>
+      <div class="formRow">
+        <div class="formGroup">
+          <label for="clientName">Full Name</label>
+          <input type="text" id="clientName" placeholder="Client Name" required>
+        </div>
+        <div class="formGroup">
+          <label for="clientContact">Email or VIP Phone</label>
+          <input type="text" id="clientContact" placeholder="concierge@collector.com" required>
+        </div>
+      </div>
+      <div class="formGroup">
+        <label for="clientNotes">Special Requests / Paint Notes</label>
+        <textarea id="clientNotes" rows="3" placeholder="Specify bespoke requests, enclosed transport pickup address, or paint history..."></textarea>
+      </div>
+      <button type="submit" class="btnPrimary" style="width:100%;justify-content:center;padding:18px;margin-top:8px">Submit Commission Request →</button>
+    </form>
+    <div class="formFeedback" id="formFeedback">
+      <h3 style="font-size:24px;font-weight:800;letter-spacing:-.04em;text-transform:uppercase;margin:0 0 12px;color:#fff">COMMISSION REQUEST RECEIVED</h3>
+      <p style="font-size:14px;line-height:1.7;color:#c0bcb7;margin:0 0 20px" id="feedbackText">Thank you. An atelier concierge technician will contact you within 4 business hours with enclosed transport logistics and allocation availability.</p>
+      <button type="button" class="btnOutline" id="btnResetForm">Submit Another Inquiry</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- EXPANDED STUDIO FOOTER -->
+<footer class="studioFooter">
+  <div class="footerGrid">
+    <div class="footerCol">
+      <div class="brand" style="margin-bottom:18px"><span class="brandIcon" aria-hidden="true"></span>THE REVEAL <span style="font-weight:400;color:#777;letter-spacing:0">/</span> ATELIER</div>
+      <p>Precision paint protection film, optical ceramic encapsulation, and concours surface restoration for the world's most exceptional hypercars and classic heritage investments.</p>
+    </div>
+    <div class="footerCol">
+      <h4>ATELIER LOCATIONS</h4>
+      <ul>
+        <li><a href="#inquiry">Modena (Via Emilia Est)</a></li>
+        <li><a href="#inquiry">London (Mayfair W1)</a></li>
+        <li><a href="#inquiry">Dubai (Al Quoz / DIFC)</a></li>
+        <li><a href="#inquiry">Los Angeles (Beverly Hills)</a></li>
+      </ul>
+    </div>
+    <div class="footerCol">
+      <h4>DISCIPLINES</h4>
+      <ul>
+        <li><a href="#protocol">Optical PPF Fusion</a></li>
+        <li><a href="#protocol">Stealth Satin Conversion</a></li>
+        <li><a href="#inspection">Multi-Stage Jeweling</a></li>
+        <li><a href="#tiers">Concours Ceramic Shield</a></li>
+      </ul>
+    </div>
+    <div class="footerCol">
+      <h4>PRIVATE CONCIERGE</h4>
+      <ul>
+        <li><a href="#inquiry">Enclosed Carrier Transport</a></li>
+        <li><a href="#inquiry">Private Collection Vaults</a></li>
+        <li><a href="#inquiry">Trackside Support Team</a></li>
+        <li><a href="#inquiry">Direct Master Technician</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footerBottomBar">
+    <span>© 2026 THE REVEAL ATELIER. ALL RIGHTS RESERVED.</span>
+    <span>MODENA · LONDON · DUBAI · LOS ANGELES</span>
+  </div>
+</footer>
+<script src="assets/lenis.min.js"></script>
+<script>
+(()=>{'use strict';
+// Edit these chapter titles, captions, and timeline boundaries to match your branding.
+// Times refer to seconds within the 20-second merged master video.
+const chapters = [
+ {start:0,end:1.12,label:'THE BEGINNING',eyebrow:'CHAPTER 01 / THE DARKNESS',line1:'BEFORE',line2:'THE REVEAL',copy:'Every extraordinary detail begins with a moment of anticipation.'},
+ {start:1.12,end:3.40,label:'THE FIRST SPARK',eyebrow:'CHAPTER 02 / LIGHT',line1:'ONE LIGHT.',line2:'INFINITE POSSIBILITIES.',copy:'One by one, illumination draws the extraordinary out of darkness.'},
+ {start:3.40,end:7.12,label:'THE SILHOUETTE',eyebrow:'CHAPTER 03 / DESIGN',line1:'SCULPTED',line2:'BY LIGHT',copy:'Every contour has a purpose. Every reflection has a story.'},
+ {start:7.12,end:8.85,label:'THE SHOWROOM',eyebrow:'CHAPTER 04 / REVELATION',line1:'EVERY DETAIL',line2:'MATTERS',copy:'A sculptural form, revealed one highlight at a time.'},
+ {start:8.85,end:10.36,label:'THE IGNITION',eyebrow:'CHAPTER 05 / IGNITION',line1:'POWER',line2:'AWAKENS',copy:'The final lights ignite. The perspective begins to shift.'},
+ {start:10.36,end:12.40,label:'THE APPROACH',eyebrow:'CHAPTER 06 / MOTION',line1:'CLOSER TO',line2:'PERFECTION',copy:'The camera moves in. Details hidden at a distance come into focus.'},
+ {start:12.40,end:14.90,label:'THE INSPECTION',eyebrow:'CHAPTER 07 / THE SURFACE',line1:'THE DETAILS',line2:'OTHERS MISS',copy:'Under the light, fine swirls and micro-imperfections emerge.'},
+ {start:14.90,end:17.35,label:'THE PROTECTION',eyebrow:'CHAPTER 08 / PPF',line1:'AN INVISIBLE',line2:'SHIELD',copy:'A transparent protective film flows across the sculpted bonnet.'},
+ {start:17.35,end:18.85,label:'THE FINISH',eyebrow:'CHAPTER 09 / PRECISION',line1:'PRECISION IN',line2:'EVERY LAYER',copy:'Engineered protection, without compromising the original beauty.'},
+ {start:18.85,end:20.00,label:'THE FINAL REVEAL',eyebrow:'CHAPTER 10 / FINALE',line1:'PROTECTED TO',line2:'PERFECTION',copy:'The finish stays extraordinary. The protection stays unseen.'}
+];
+const duration=20, video=document.getElementById('heroVideo'), section=document.getElementById('scrollExperience'), sceneArea=document.getElementById('sceneArea'), markers=document.getElementById('markers');
+const fill=document.getElementById('progressFill'), chapterNumber=document.getElementById('chapterNumber'), chapterLabel=document.getElementById('chapterLabel'), timecode=document.getElementById('timecode'), loading=document.getElementById('loading');
+const scenes=[];let lastIndex=-1;let target=0,visual=0,lastFrame=0,ready=false;
+let isSeeking=false,pendingSeek=null,lastSeekTime=0;
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+const ease=t=>t*t*(3-2*t);
+
+// Smooth inertia scrolling engine
+const lenis = (!reduced && typeof Lenis !== 'undefined') ? new Lenis({
+  duration: 1.25,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  orientation: 'vertical',
+  gestureOrientation: 'vertical',
+  smoothWheel: true,
+  wheelMultiplier: 0.88,
+  touchMultiplier: 1.5,
+  infinite: false
+}) : null;
+
+chapters.forEach((c,i)=>{
+ const block=document.createElement('div');block.className='chapter';
+ block.innerHTML='<div class="chapterSmall">'+c.eyebrow+'</div><h1><span>'+c.line1+'</span><em>'+c.line2+'</em></h1><p>'+c.copy+'</p>';
+ sceneArea.appendChild(block);scenes.push(block);
+ const btn=document.createElement('button');btn.type='button';btn.title=c.label;btn.setAttribute('aria-label','Go to chapter '+(i+1)+': '+c.label);
+ btn.innerHTML='<span class="markerTitle">'+c.label+'</span><span class="markerDot"></span>';
+ btn.addEventListener('click',()=>{
+   const pct=((c.start+c.end)*.5)/duration;
+   const scrollArea=section.offsetHeight-innerHeight;
+   const targetTop=section.offsetTop+pct*scrollArea;
+   if(lenis){
+     lenis.scrollTo(targetTop,{duration:1.3,easing:(x)=>1-Math.pow(1-x,3)});
+   }else{
+     window.scrollTo({top:targetTop,behavior:reduced?'instant':'smooth'});
+   }
+ });
+ markers.appendChild(btn);
+});
+const markerBtns=[...markers.querySelectorAll('button')];
+
+function readScroll(){
+  const currentY = lenis ? lenis.scroll : window.scrollY;
+  const range=Math.max(1,section.offsetHeight-innerHeight);
+  target=clamp((currentY-section.offsetTop)/range,0,1);
+}
+
+function seekVideo(time){
+  if(!ready || !video.duration) return;
+  const maxSafeTime=Math.max(0,(video.duration||duration)-.04);
+  const targetTime=clamp(time,0,maxSafeTime);
+
+  if(isSeeking){
+    pendingSeek=targetTime;
+    return;
+  }
+  if(Math.abs(video.currentTime-targetTime)<0.012){
+    return;
+  }
+  isSeeking=true;
+  lastSeekTime=performance.now();
+  try{
+    video.currentTime=targetTime;
+  }catch(e){
+    isSeeking=false;
+  }
+}
+
+video.addEventListener('seeked',()=>{
+  isSeeking=false;
+  if(pendingSeek!==null){
+    const nextTime=pendingSeek;
+    pendingSeek=null;
+    seekVideo(nextTime);
+  }
+});
+
+function frame(now){
+ if(lenis) lenis.raf(now);
+ readScroll();
+
+ const dt=lastFrame?Math.min(64,now-lastFrame):16;lastFrame=now;
+ const blend=reduced?1:1-Math.exp(-dt/60);
+ visual+=(target-visual)*blend;if(Math.abs(target-visual)<0.00001) visual=target;
+ const t=visual*duration; fill.style.width=(visual*100).toFixed(3)+'%';
+ timecode.textContent='00:'+String(Math.min(20,Math.floor(t))).padStart(2,'0');
+ const nextIndex=chapters.findIndex(c=>t<c.end); const idx=nextIndex<0?chapters.length-1:nextIndex;
+ if(idx!==lastIndex){lastIndex=idx;chapterNumber.textContent=String(idx+1).padStart(2,'0');chapterLabel.textContent=chapters[idx].label;markerBtns.forEach((b,i)=>{b.classList.toggle('active',i===idx);b.setAttribute('aria-current',i===idx?'step':'false')});}
+ 
+ chapters.forEach((c,i)=>{
+  const chapterLen=c.end-c.start;
+  const fadeTime=Math.min(0.42,Math.max(0.18,chapterLen*0.22));
+  const enter=ease(clamp((t-c.start)/fadeTime,0,1));
+  const exit=i===chapters.length-1?1:ease(clamp((c.end-t)/fadeTime,0,1));
+  const opacity=enter*exit;const show=opacity>.003;
+  const node=scenes[i];node.classList.toggle('on',show);
+  if(show){
+    node.style.opacity=opacity.toFixed(3);
+    const translateY=((1-enter)*26-(1-exit)*16).toFixed(2);
+    node.style.transform=`translate3d(0,${translateY}px,0)`;
+  }else{
+    node.style.opacity='0';
+  }
+ });
+ document.getElementById('scrollHint').textContent=visual>.015?'SCROLL TO EXPLORE':'SCROLL TO REVEAL';
+
+ if(isSeeking && (now-lastSeekTime>140)){
+   isSeeking=false;
+ }
+ seekVideo(t);
+
+ requestAnimationFrame(frame);
+}
+function markReady(){if(ready)return;ready=true;loading.classList.add('hide');video.pause();readScroll()}
+video.addEventListener('loadedmetadata',markReady);video.addEventListener('canplay',markReady,{once:true});
+video.addEventListener('error',()=>{loading.innerHTML='<div class="loadingInner">The film could not be loaded.<br><br>Check that the MP4 is beside this HTML, or use the standalone edition.</div>'});
+window.addEventListener('scroll',readScroll,{passive:true});window.addEventListener('resize',readScroll,{passive:true});
+document.getElementById('replay').addEventListener('click',()=>{
+  if(lenis){
+    lenis.scrollTo(section.offsetTop,{duration:1.6,easing:(x)=>1-Math.pow(1-x,3)});
+  }else{
+    window.scrollTo({top:section.offsetTop,behavior:reduced?'instant':'smooth'});
+  }
+});
+
+// Section 2: Fleet & Commissions Interactive Showcase
+const fleetData = [
+  {
+    category: 'CLASSIC ICON · CHASSIS 00198',
+    name: '1957 MERCEDES-BENZ 300 SL',
+    story: 'An irreplaceable automotive sculpture in deep burgundy lacquer. Hand-templated 8.0 mil optical clear coat encapsulation without factory trim removal or disturbance of authentic period patina.',
+    image: 'assets/car-300sl-clean.png',
+    alt: '1957 Mercedes-Benz 300 SL Roadster',
+    specs: [
+      { label: 'Formulation', val: '8.0 Mil Optical TPU' },
+      { label: 'Edge Method', val: '100% Hand-Wrapped' },
+      { label: 'Disassembly', val: 'Zero Trim Removal' },
+      { label: 'Warranty', val: 'Concours Preservation' }
+    ]
+  },
+  {
+    category: 'TACTICAL ARMOUR · HIGH-IMPACT DEFENSE',
+    name: 'MERCEDES-AMG G 63 V8',
+    story: 'Engineered to absorb high-velocity gravel and off-road ballistic impacts on steep upright aerodynamic planes. Complete body satin/matte PPF conversion transforming obsidian gloss into impenetrable stealth armor.',
+    image: 'assets/car-gwagon-clean.png',
+    alt: 'Mercedes-AMG G 63 V8 Biturbo',
+    specs: [
+      { label: 'Formulation', val: '10.5 Mil Ballistic Shield' },
+      { label: 'Finish', val: 'Stealth Satin Conversion' },
+      { label: 'Repellency', val: 'Oleophobic Mud Shed' },
+      { label: 'Warranty', val: '10-Year Armor Guarantee' }
+    ]
+  },
+  {
+    category: 'EXECUTIVE FLAGSHIP · MIRROR CONCOURS',
+    name: 'MERCEDES-MAYBACH S-CLASS',
+    story: 'Over 200 hours of jewel-grade multi-stage rotary correction eliminating orange peel on deep piano lacquer. Hermetically sealed beneath self-healing ceramic-infused film and double shortwave infrared-cured.',
+    image: 'assets/car-maybach-clean.png',
+    alt: 'Mercedes-Maybach S-Class Limousine',
+    specs: [
+      { label: 'Refraction', val: '99.8% Pure Index' },
+      { label: 'Correction', val: 'Jewel-Grade 3-Stage' },
+      { label: 'Coating', val: 'Dual-Stage IR Ceramic' },
+      { label: 'Warranty', val: 'Lifetime Atelier Concierge' }
+    ]
+  }
+];
+
+const fleetTabs = document.querySelectorAll('.fleetTab');
+const fleetImg = document.getElementById('fleetCarImg');
+const fleetCategory = document.getElementById('fleetCategory');
+const fleetName = document.getElementById('fleetName');
+const fleetStory = document.getElementById('fleetStory');
+const fleetSpecs = document.getElementById('fleetSpecs');
+
+fleetTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const idx = Number(tab.dataset.fleet);
+    if (isNaN(idx) || !fleetData[idx]) return;
+    fleetTabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+
+    const item = fleetData[idx];
+    if (fleetImg) {
+      fleetImg.style.opacity = '0';
+      fleetImg.style.transform = 'scale(0.97)';
+      setTimeout(() => {
+        fleetImg.src = item.image;
+        fleetImg.alt = item.alt;
+        fleetImg.style.opacity = '1';
+        fleetImg.style.transform = 'scale(1)';
+      }, 150);
+    }
+    if (fleetCategory) fleetCategory.textContent = item.category;
+    if (fleetName) fleetName.textContent = item.name;
+    if (fleetStory) fleetStory.textContent = item.story;
+    if (fleetSpecs) {
+      fleetSpecs.innerHTML = item.specs.map(s => 
+        `<div class="specItem"><small>${s.label}</small><strong>${s.val}</strong></div>`
+      ).join('');
+    }
+  });
+});
+
+// Section 2: Interactive Before / After Inspection Slider
+const compareBox = document.getElementById('compareContainer');
+const paneBefore = document.getElementById('paneBefore');
+const compareHandle = document.getElementById('compareHandle');
+let isDraggingCompare = false;
+
+function setCompareRatio(ratio) {
+  const clamped = Math.max(0.04, Math.min(0.96, ratio));
+  const pct = (clamped * 100).toFixed(2);
+  if (paneBefore) paneBefore.style.width = pct + '%';
+  if (compareHandle) compareHandle.style.left = pct + '%';
+}
+
+if (compareBox && paneBefore && compareHandle) {
+  const handlePointer = (e) => {
+    const rect = compareBox.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const ratio = (clientX - rect.left) / rect.width;
+    setCompareRatio(ratio);
+  };
+  compareBox.addEventListener('mousedown', (e) => {
+    isDraggingCompare = true;
+    handlePointer(e);
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (isDraggingCompare) handlePointer(e);
+  });
+  window.addEventListener('mouseup', () => {
+    isDraggingCompare = false;
+  });
+  compareBox.addEventListener('touchstart', (e) => {
+    isDraggingCompare = true;
+    handlePointer(e);
+  }, { passive: true });
+  window.addEventListener('touchmove', (e) => {
+    if (isDraggingCompare) handlePointer(e);
+  }, { passive: true });
+  window.addEventListener('touchend', () => {
+    isDraggingCompare = false;
+  });
+}
+
+// Section 2: Inquiry Form submission
+const inquiryForm = document.getElementById('inquiryForm');
+const formFeedback = document.getElementById('formFeedback');
+const feedbackText = document.getElementById('feedbackText');
+const btnResetForm = document.getElementById('btnResetForm');
+
+if (inquiryForm && formFeedback) {
+  inquiryForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const vehicle = document.getElementById('carMakeModel')?.value || 'Vehicle';
+    const tier = document.getElementById('serviceTier')?.value || 'Atelier Build';
+    if (feedbackText) {
+      feedbackText.textContent = `Thank you. Commission request received for your ${vehicle} (${tier}). An atelier concierge technician will reach out within 4 business hours with transport scheduling and allocation dates.`;
+    }
+    inquiryForm.style.display = 'none';
+    formFeedback.style.display = 'block';
+  });
+}
+
+if (btnResetForm && inquiryForm && formFeedback) {
+  btnResetForm.addEventListener('click', () => {
+    inquiryForm.reset();
+    formFeedback.style.display = 'none';
+    inquiryForm.style.display = 'flex';
+  });
+}
+
+// Smooth Lenis Anchor Navigation
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const hash = this.getAttribute('href');
+    if (!hash || hash === '#') return;
+    const targetEl = document.querySelector(hash);
+    if (targetEl) {
+      e.preventDefault();
+      if (lenis) {
+        lenis.scrollTo(targetEl, { duration: 1.4, easing: (x) => 1 - Math.pow(1 - x, 3) });
+      } else {
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+});
+readScroll(); requestAnimationFrame(frame);
+// Mobile Safari sometimes waits for a user gesture before allowing precise seeks.
+window.addEventListener('pointerdown',()=>{if(video.readyState>=1){try{video.currentTime=video.currentTime||0.002;}catch(e){}}},{once:true,passive:true});
+})();
+</script>
+<script src="assets/runway.js" defer></script>
+</body>
+</html>
