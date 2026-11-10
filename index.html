@@ -89,16 +89,20 @@ button {font:inherit} button:focus-visible, a:focus-visible {outline:2px solid v
 
 /* FLEET & COMMISSIONS SHOWCASE */
 .fleetSection{padding:clamp(70px,8vw,130px) var(--edge);background:#070707;border-top:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden}
-.fleetTabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;border-bottom:1px solid rgba(255,255,255,.10);padding-bottom:18px}
-.fleetTab{background:none;border:1px solid rgba(255,255,255,.14);color:#888;padding:12px 22px;font-size:10px;letter-spacing:.20em;text-transform:uppercase;cursor:pointer;transition:all .25s ease;font-weight:700}
-.fleetTab:hover{color:#fff;border-color:rgba(255,255,255,.35)}
+.fleetTabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:40px;border-bottom:1px solid rgba(255,255,255,.10);padding-bottom:18px}
+@media (max-width:1024px){.fleetTabs{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:580px){.fleetTabs{grid-template-columns:1fr;}}
+.fleetTab{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.14);color:#888;padding:14px 18px;font-size:10px;letter-spacing:.20em;text-transform:uppercase;cursor:pointer;transition:all .25s ease;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;position:relative}
+.fleetTab:hover{color:#fff;border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.05)}
 .fleetTab.active{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 25px rgba(255,255,255,.15)}
+.fleetTabEscalade .tabBadge{font-size:8px;letter-spacing:.15em;background:var(--red);color:#fff;padding:2px 7px;border-radius:2px;font-weight:800;transition:all .2s ease;margin-left:4px}
+.fleetTab.active .tabBadge{background:#000;color:#fff}
 
-.fleetDisplay{display:grid;grid-template-columns:1.2fr 0.8fr;gap:6%;align-items:center;background:#090909;border:1px solid rgba(255,255,255,.09);padding:clamp(36px,5vw,66px);position:relative;border-radius:2px}
+.fleetDisplay{display:grid;grid-template-columns:1.2fr 0.8fr;gap:6%;align-items:center;background:#090909;border:1px solid rgba(255,255,255,.09);padding:clamp(36px,5vw,66px);position:relative;border-radius:2px;overflow:hidden}
 .fleetDisplay::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 45% 50%,rgba(234,48,39,.09),transparent 70%);pointer-events:none}
 .fleetStage{position:relative;display:flex;align-items:center;justify-content:center;min-height:360px}
 .fleetPedestal{position:absolute;bottom:15px;width:85%;height:45px;background:radial-gradient(ellipse at center,rgba(255,255,255,.18) 0%,rgba(234,48,39,.14) 40%,transparent 70%);transform:rotateX(65deg);filter:blur(8px)}
-.fleetImg{max-width:100%;height:auto;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 25px 40px rgba(0,0,0,.95));transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s ease}
+.fleetImg{max-width:100%;height:auto;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 25px 40px rgba(0,0,0,.95));transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s ease;border-radius:4px}
 .fleetInfo{position:relative;z-index:3}
 .fleetCategory{font-size:10px;color:var(--red);letter-spacing:.28em;text-transform:uppercase;font-weight:700}
 .fleetName{font-size:clamp(28px,3vw,44px);letter-spacing:-.05em;line-height:1.05;margin:10px 0 16px;text-transform:uppercase}
@@ -106,6 +110,28 @@ button {font:inherit} button:focus-visible, a:focus-visible {outline:2px solid v
 .fleetSpecGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;border-top:1px solid rgba(255,255,255,.10);padding-top:22px;margin-bottom:30px}
 .specItem small{display:block;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#706e6b}
 .specItem strong{font-size:13px;letter-spacing:.05em;color:#fff;margin-top:4px;display:block}
+
+/* ESCALADE VIDEO THEATER OVERLAY & TRANSITIONS */
+.escaladeTheater{position:absolute;inset:0;z-index:25;background:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;border-radius:2px;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s cubic-bezier(.16,1,.3,1),visibility .5s}
+.escaladeTheater.is-active{opacity:1;visibility:visible;pointer-events:auto}
+.escaladeTheater.is-fading-out{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.3s cubic-bezier(.4,0,.2,1),visibility 1.3s}
+.escaladeVideoEl{width:100%;height:100%;object-fit:cover;display:block}
+.escaladeVideoHud{position:absolute;top:0;left:0;right:0;padding:20px 26px;background:linear-gradient(180deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,0) 100%);display:flex;align-items:center;justify-content:space-between;z-index:5;pointer-events:auto}
+.escaladeHudLeft{display:flex;align-items:center;gap:10px}
+.escaladeRecDot{width:9px;height:9px;background:var(--red);border-radius:50%;box-shadow:0 0 12px var(--red);animation:pulseRec 1.2s infinite}
+@keyframes pulseRec{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.85)}}
+.escaladeHudTitle{font-size:11px;letter-spacing:.25em;font-weight:700;color:#fff;text-transform:uppercase}
+.escaladeHudRight{display:flex;align-items:center;gap:12px}
+.escaladeAudioToggle,.escaladeSkipBtn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);color:#fff;padding:8px 14px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:all .2s ease;backdrop-filter:blur(6px);border-radius:2px;display:inline-flex;align-items:center;gap:6px}
+.escaladeAudioToggle:hover,.escaladeSkipBtn:hover{background:rgba(255,255,255,.28);border-color:#fff}
+.escaladeProgressTrack{position:absolute;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.15);z-index:5}
+.escaladeProgressBar{height:100%;width:0%;background:var(--red);box-shadow:0 0 10px var(--red);transition:width .1s linear}
+
+/* ESCALADE STAGE REPLAY CONTROL */
+.escaladeStageReplay{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.88);border:1px solid rgba(255,255,255,.35);color:#fff;padding:12px 24px;font-size:10px;letter-spacing:.22em;font-weight:700;text-transform:uppercase;cursor:pointer;z-index:10;border-radius:2px;backdrop-filter:blur(10px);display:inline-flex;align-items:center;gap:10px;transition:all .25s ease;box-shadow:0 12px 30px rgba(0,0,0,.8)}
+.escaladeStageReplay:hover{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 30px rgba(255,255,255,.35);transform:translateX(-50%) translateY(-2px)}
+.escaladeStageReplay span{color:var(--red);font-size:12px}
+.escaladeStageReplay:hover span{color:#000}
 
 /* BEFORE & AFTER INSPECTION */
 .inspectionSection{padding:clamp(70px,8vw,130px) var(--edge);background:#050505;border-top:1px solid rgba(255,255,255,.08)}
@@ -358,11 +384,37 @@ button {font:inherit} button:focus-visible, a:focus-visible {outline:2px solid v
     <button class="fleetTab active" type="button" data-fleet="0" role="tab" aria-selected="true">01 / Heritage Concours (300 SL)</button>
     <button class="fleetTab" type="button" data-fleet="1" role="tab" aria-selected="false">02 / Tactical Armour (G 63 AMG)</button>
     <button class="fleetTab" type="button" data-fleet="2" role="tab" aria-selected="false">03 / Executive Concours (Maybach S-Class)</button>
+    <button class="fleetTab fleetTabEscalade" type="button" data-fleet="3" role="tab" aria-selected="false">04 / ESCALADE <span class="tabBadge">CINEMATIC</span></button>
   </div>
   <div class="fleetDisplay" id="fleetDisplay">
-    <div class="fleetStage">
+    <!-- ESCALADE CINEMATIC VIDEO THEATER OVERLAY -->
+    <div class="escaladeTheater" id="escaladeTheater" aria-hidden="true">
+      <video id="escaladeVideo" class="escaladeVideoEl" playsinline preload="auto" src="assets/escalade-reveal.mp4"></video>
+      <div class="escaladeVideoHud">
+        <div class="escaladeHudLeft">
+          <span class="escaladeRecDot"></span>
+          <span class="escaladeHudTitle">COMMISSION REVEAL // CADILLAC ESCALADE</span>
+        </div>
+        <div class="escaladeHudRight">
+          <button type="button" class="escaladeAudioToggle" id="escaladeAudioToggle" aria-label="Toggle video sound">
+            <span id="escaladeAudioIcon">🔊</span> <span id="escaladeAudioLabel">UNMUTE</span>
+          </button>
+          <button type="button" class="escaladeSkipBtn" id="escaladeSkipBtn" aria-label="Skip to specifications">
+            SPECS ✕
+          </button>
+        </div>
+      </div>
+      <div class="escaladeProgressTrack">
+        <div class="escaladeProgressBar" id="escaladeProgressBar"></div>
+      </div>
+    </div>
+
+    <div class="fleetStage" id="fleetStage">
       <div class="fleetPedestal" aria-hidden="true"></div>
       <img src="assets/car-300sl-clean.png" id="fleetCarImg" class="fleetImg" alt="1957 Mercedes-Benz 300 SL Roadster">
+      <button type="button" class="escaladeStageReplay" id="escaladeStageReplay" style="display:none" aria-label="Replay Escalade Cinematic Reveal">
+        <span>▶</span> REPLAY ESCALADE REVEAL
+      </button>
     </div>
     <div class="fleetInfo">
       <div class="fleetCategory" id="fleetCategory">CLASSIC ICON · CHASSIS 00198</div>
@@ -374,7 +426,10 @@ button {font:inherit} button:focus-visible, a:focus-visible {outline:2px solid v
         <div class="specItem"><small>Disassembly</small><strong>Zero Trim Removal</strong></div>
         <div class="specItem"><small>Warranty</small><strong>Concours Preservation</strong></div>
       </div>
-      <a href="#inquiry" class="btnPrimary">Commission Similar Build →</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+        <a href="#inquiry" class="btnPrimary">Commission Similar Build →</a>
+        <button type="button" class="btnOutline" id="btnEscaladeWatch" style="display:none">▶ Play Reveal Film</button>
+      </div>
     </div>
   </div>
 </section>
@@ -649,6 +704,7 @@ const lenis = (!reduced && typeof Lenis !== 'undefined') ? new Lenis({
   touchMultiplier: 1.5,
   infinite: false
 }) : null;
+window.lenis = lenis;
 
 chapters.forEach((c,i)=>{
  const block=document.createElement('div');block.className='chapter';
@@ -794,6 +850,20 @@ const fleetData = [
       { label: 'Coating', val: 'Dual-Stage IR Ceramic' },
       { label: 'Warranty', val: 'Lifetime Atelier Concierge' }
     ]
+  },
+  {
+    category: 'PRESIDENTIAL ARMOUR · LUXURY TITAN',
+    name: 'CADILLAC ESCALADE',
+    story: 'Full-spectrum optical PPF and ballistic ceramic encapsulation for the ultimate executive transport. Complete exterior coverage with self-healing elastomer, precision CAD laser templates, and stealth privacy glazing.',
+    image: 'assets/car-escalade-poster.jpg',
+    alt: 'Cadillac Escalade Bespoke Commission',
+    isVideo: true,
+    specs: [
+      { label: 'Formulation', val: '10.5 Mil Ballistic TPU' },
+      { label: 'Edge Method', val: 'Zero-Disassembly Laser Scan' },
+      { label: 'Glazing', val: '98% Infrared Rejection Film' },
+      { label: 'Warranty', val: '10-Year Master Concierge' }
+    ]
   }
 ];
 
@@ -803,6 +873,90 @@ const fleetCategory = document.getElementById('fleetCategory');
 const fleetName = document.getElementById('fleetName');
 const fleetStory = document.getElementById('fleetStory');
 const fleetSpecs = document.getElementById('fleetSpecs');
+const escaladeTheater = document.getElementById('escaladeTheater');
+const escaladeVideo = document.getElementById('escaladeVideo');
+const escaladeProgressBar = document.getElementById('escaladeProgressBar');
+const escaladeAudioToggle = document.getElementById('escaladeAudioToggle');
+const escaladeAudioIcon = document.getElementById('escaladeAudioIcon');
+const escaladeAudioLabel = document.getElementById('escaladeAudioLabel');
+const escaladeSkipBtn = document.getElementById('escaladeSkipBtn');
+const escaladeStageReplay = document.getElementById('escaladeStageReplay');
+const btnEscaladeWatch = document.getElementById('btnEscaladeWatch');
+
+function playEscaladeReveal() {
+  if (!escaladeTheater || !escaladeVideo) return;
+  escaladeTheater.classList.remove('is-fading-out');
+  escaladeTheater.classList.add('is-active');
+  if (escaladeStageReplay) escaladeStageReplay.style.display = 'none';
+  if (btnEscaladeWatch) btnEscaladeWatch.style.display = 'none';
+  escaladeVideo.currentTime = 0;
+  const playPromise = escaladeVideo.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      escaladeVideo.muted = true;
+      if (escaladeAudioIcon) escaladeAudioIcon.textContent = '🔇';
+      if (escaladeAudioLabel) escaladeAudioLabel.textContent = 'UNMUTE';
+      escaladeVideo.play();
+    });
+  }
+}
+
+function fadeOutEscaladeVideo() {
+  if (!escaladeTheater) return;
+  escaladeTheater.classList.remove('is-active');
+  escaladeTheater.classList.add('is-fading-out');
+  setTimeout(() => {
+    escaladeTheater.classList.remove('is-fading-out');
+    if (escaladeVideo) escaladeVideo.pause();
+    if (escaladeStageReplay) escaladeStageReplay.style.display = 'inline-flex';
+    if (btnEscaladeWatch) btnEscaladeWatch.style.display = 'inline-flex';
+  }, 1300);
+}
+
+if (escaladeVideo) {
+  escaladeVideo.addEventListener('timeupdate', () => {
+    if (escaladeProgressBar && escaladeVideo.duration) {
+      const pct = (escaladeVideo.currentTime / escaladeVideo.duration) * 100;
+      escaladeProgressBar.style.width = pct + '%';
+    }
+  });
+
+  // AS THE VIDEO ENDS, FADE OUT TRANSITION
+  escaladeVideo.addEventListener('ended', () => {
+    fadeOutEscaladeVideo();
+  });
+}
+
+if (escaladeSkipBtn) {
+  escaladeSkipBtn.addEventListener('click', () => {
+    fadeOutEscaladeVideo();
+  });
+}
+
+if (escaladeAudioToggle && escaladeVideo) {
+  escaladeAudioToggle.addEventListener('click', () => {
+    escaladeVideo.muted = !escaladeVideo.muted;
+    if (escaladeVideo.muted) {
+      escaladeAudioIcon.textContent = '🔇';
+      escaladeAudioLabel.textContent = 'UNMUTE';
+    } else {
+      escaladeAudioIcon.textContent = '🔊';
+      escaladeAudioLabel.textContent = 'MUTE';
+    }
+  });
+}
+
+if (escaladeStageReplay) {
+  escaladeStageReplay.addEventListener('click', () => {
+    playEscaladeReveal();
+  });
+}
+
+if (btnEscaladeWatch) {
+  btnEscaladeWatch.addEventListener('click', () => {
+    playEscaladeReveal();
+  });
+}
 
 fleetTabs.forEach(tab => {
   tab.addEventListener('click', () => {
@@ -833,6 +987,22 @@ fleetTabs.forEach(tab => {
       fleetSpecs.innerHTML = item.specs.map(s => 
         `<div class="specItem"><small>${s.label}</small><strong>${s.val}</strong></div>`
       ).join('');
+    }
+
+    if (item.isVideo) {
+      // 4th Column (ESCALADE): Show and play video immediately
+      playEscaladeReveal();
+    } else {
+      // Other tabs: Stop video and hide overlay
+      if (escaladeVideo) {
+        escaladeVideo.pause();
+        escaladeVideo.currentTime = 0;
+      }
+      if (escaladeTheater) {
+        escaladeTheater.classList.remove('is-active', 'is-fading-out');
+      }
+      if (escaladeStageReplay) escaladeStageReplay.style.display = 'none';
+      if (btnEscaladeWatch) btnEscaladeWatch.style.display = 'none';
     }
   });
 });

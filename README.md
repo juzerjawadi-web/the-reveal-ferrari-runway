@@ -52,6 +52,7 @@
 ## ⚡ Key Highlights & Capabilities
 
 - 🎯 **Frame-Accurate Video Scrubbing**: 20-second 1080p cinematic video mapped dynamically across scroll depth using normalized viewport interpolation (`currentTime = progress × duration`).
+- 🎬 **Escalade Cinematic Video Reveal**: Interactive 4th column in the `BESPOKE EXECUTION ACROSS EVERY CLASS.` section triggering immediate video playback in a dedicated theater HUD with a smooth fade-out transition on completion to reveal vehicle specifications.
 - 🏎️ **Custom 3D Circular Runway Engine**: Native `<runway-section>` Web Component simulating a 3D cylindrical stage with trigonometric model projection, depth of field blur (`backdrop-filter`/CSS blur), and inertia dragging.
 - 🧲 **Second-Order Spring Physics**: Custom spring-damper integration (`stiffness = 95`, `follow lag = 0.04s`) for natural carousel settling and magnetic snap navigation.
 - 🔍 **Interactive Component Hotspot Pins**: View Look overlay with numbered floating product pins that dynamically map to vehicle coordinates and open detailed component specifications.
